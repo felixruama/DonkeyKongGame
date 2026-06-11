@@ -1,71 +1,79 @@
-# Princess vs Donkey Kong - Jogo 2D em Java (POO)
-### ISCTE-IUL | Programação Orientada a Objetos
+# Princess vs Donkey Kong - 2D Java Game (OOP)
+### ISCTE-IUL | Object-Oriented Programming
 
-Este repositório contém o código-fonte de um jogo 2D *top-down* desenvolvido em Java, focado na exploração de masmorras (Dungeon Crawler). O projeto foi desenhado com uma forte aposta em **arquitetura de software** e **Padrões de Desenho (Design Patterns)**, garantindo um código altamente modular, expansível e fácil de manter.
-
----
-
-##  Mecânicas de Jogo e Funcionalidades
-
-O jogador controla a "Princess" e tem como objetivo navegar por várias salas (Rooms), derrotar inimigos e encontrar a bandeira final (`Flag`), superando obstáculos e gerindo recursos e tempo.
-
-* **Combate e Espadas:** O jogador possui HP (Vida) e Dano de Ataque. Apanhar espadas (`Sword`) **aumenta permanentemente o dano de ataque**, sendo essencial para derrotar inimigos mais fortes com menos golpes.
-* **Sistema de Durabilidade (Carne/Meat):** Implementação de um sistema de tempo global (ticks). A carne cura o jogador, mas **apodrece após um curto período de tempo**. O jogador precisa de planear a sua rota e "comê-la" rapidamente antes que se estrague.
-* **Sistema de Bombas (AoE):** O jogador pode apanhar bombas espalhadas pelo mapa e guardá-las. Pressionando a tecla **'B'**, a bomba é largada no chão. Após alguns turnos, explode num raio de área definido, destruindo obstáculos, ferindo inimigos e ativando armadilhas em cadeia.
-* **Armadilhas Dinâmicas:** Existência de armadilhas visíveis (`Trap`) e armadilhas ocultas (`HiddenTrap`) que são ativadas quando o jogador pisa o bloco, exigindo navegação cuidadosa.
-* **Inteligência Inimiga Variada:**
-  * **Donkey Kong (`Enemy`):** O "Boss" que precisa de ser derrotado para abrir as portas da sala (`Door`).
-  * **Morcegos (`Bat`):** Movimentação aleatória e imprevisível pela grelha.
-  * **Bananas:** Obstáculos em queda vertical.
+This repository contains the source code for a 2D top-down Java game focused on dungeon exploration (Dungeon Crawler). The project places a strong emphasis on **software architecture** and **design patterns**, ensuring a highly modular, extensible, and maintainable codebase.
 
 ---
 
-## Arquitetura de Software e POO
+## Game Mechanics and Features
 
-O verdadeiro valor deste projeto reside na sua infraestrutura técnica. Foram aplicados os pilares da Programação Orientada a Objetos para criar um sistema expansível:
+The player controls the "Princess" and must navigate through multiple rooms, defeat enemies, and reach the final flag (`Flag`), while overcoming obstacles and managing resources and time.
 
-### 1. Padrões de Desenho (Design Patterns)
-* **Singleton:** Utilizado na `GameEngine` e na `ImageGUI` para garantir um único ponto global de controlo de estado do jogo e renderização gráfica.
-* **Observer:** A `GameEngine` atua como *Observer* da interface gráfica (`ImageGUI`), reagindo de forma assíncrona aos inputs do teclado (eventos).
-* **Factory Method:** Instanciação dinâmica de classes a partir da leitura de carateres num ficheiro `.txt` (ex: 'H' = Player, 'W' = Wall).
-
-### 2. Polimorfismo e Interfaces
-A base de código foi estruturada utilizando interfaces de contrato estritas:
-* `Attackable`: Partilhada entre o Jogador e os Inimigos, definindo os métodos de receber dano e estado de derrota.
-* `Interactable`: Define como o jogador interage com o ambiente (apanhar itens, pisar armadilhas).
-* `TicksChangeble`: Interface crucial para a mecânica de tempo, aplicada a objetos que sofrem mutações com a passagem de turnos (como a carne a apodrecer).
-* `FallableTile`: Define o comportamento físico de objetos que permitem queda.
-
-### 3. Hierarquia de Classes Abstratas
-Criação de classes base como `MoveableObject` (que trata da lógica vetorial e colisões genéricas) e `InteractableObjects`, permitindo que novas entidades sejam adicionadas ao jogo sem duplicar código (Princípio Open/Closed do SOLID).
+- **Combat and Swords:** The player has HP (health) and attack damage. Collecting swords (`Sword`) permanently increases attack damage, which is essential for defeating stronger enemies in fewer hits.
+- **Durability System (Meat):** A global tick-based system is implemented. Meat heals the player but **spoils after a short period of time**. The player must plan routes carefully to consume it before it decays.
+- **Bomb System (AoE):** The player can collect bombs scattered throughout the map and store them. By pressing the **'B' key**, a bomb is placed on the ground. After a few turns, it explodes in an area-of-effect radius, destroying obstacles, damaging enemies, and triggering chain reactions.
+- **Dynamic Traps:** Both visible traps (`Trap`) and hidden traps (`HiddenTrap`) exist. Hidden traps activate when the player steps on them, requiring careful navigation.
+- **Varied Enemy AI:**
+  - **Donkey Kong (`Enemy`):** The boss that must be defeated to unlock room doors (`Door`).
+  - **Bats (`Bat`):** Random and unpredictable movement across the grid.
+  - **Bananas:** Falling obstacles that act as environmental hazards.
 
 ---
 
-## Tecnologias Utilizadas
+## Software Architecture and OOP Design
 
-* **Linguagem:** Java (JDK 8+)
-* **Bibliotecas:** Interface Gráfica nativa baseada em `javax.swing` e `java.awt` (fornecida pela framework académica `pt.iscte.poo`).
-* **Estruturas de Dados:** Uso intensivo de *Collections* (Lists, ArrayLists) e iterações funcionais (`forEach`) para gestão espacial de objetos.
+The main value of this project lies in its technical architecture. Object-Oriented Programming principles were applied to ensure extensibility and maintainability.
+
+### Design Patterns
+
+- **Singleton:** Used in `GameEngine` and `ImageGUI` to guarantee a single global point of control for game state and rendering.
+- **Observer:** `GameEngine` acts as an observer of the graphical interface (`ImageGUI`), reacting asynchronously to keyboard input events.
+- **Factory Method:** Dynamic instantiation of classes based on characters read from `.txt` map files (e.g., 'H' = Player, 'W' = Wall).
+
+### Polymorphism and Interfaces
+
+The codebase is structured around strict interface contracts:
+
+- `Attackable`: Shared between player and enemies, defining damage and death behavior.
+- `Interactable`: Defines interactions with the environment (picking items, triggering traps).
+- `TicksChangeble`: Critical for time-based mechanics, applied to objects that change over time (such as meat spoiling).
+- `FallableTile`: Defines behavior for objects affected by gravity or falling mechanics.
+
+### Abstract Class Hierarchy
+
+Base classes such as `MoveableObject` (handling vector logic and collision detection) and `InteractableObjects` were implemented to avoid code duplication and support extensibility (Open/Closed Principle from SOLID).
 
 ---
 
-## Como Executar o Jogo
+## Technologies Used
 
-### Pré-requisitos
-* Java Development Kit (JDK) instalado no sistema.
-* Um IDE (como Eclipse, IntelliJ IDEA ou VS Code com extensão Java).
+- **Language:** Java (JDK 8+)
+- **Libraries:** GUI based on `javax.swing` and `java.awt` (provided by the academic framework `pt.iscte.poo`)
+- **Data Structures:** Extensive use of Java Collections (Lists, ArrayLists) and functional iteration (`forEach`) for spatial object management.
 
-### Instalação e Execução
-1. Clone este repositório para a sua máquina local.
-2. Abra o projeto no seu IDE.
-3. Garanta que a pasta `images` (contendo os sprites visuais) e os ficheiros de mapa (`room0.txt`, etc.) estão na raiz do projeto.
-4. Execute o ficheiro principal da aplicação: `Main.java`
+---
 
-### Controlos
-* **Setas Direcionais:** Movimentar a personagem (o combate e apanhar itens são feitos automaticamente ao chocar contra eles).
-* **Tecla 'B':** Largar a bomba no chão (após ter apanhado uma).
+## How to Run the Game
 
-### Game Visual
+### Prerequisites
 
-<img width="477" height="524" alt="Captura de Tela 2026-06-11 às 02 30 33" src="https://github.com/user-attachments/assets/2a0ccd7e-69c2-4e30-806a-66496b07549b" />
- 
+- Java Development Kit (JDK) installed
+- An IDE such as Eclipse, IntelliJ IDEA, or VS Code with Java support
+
+### Installation and Execution
+
+1. Clone the repository
+2. Open the project in your IDE
+3. Ensure the `images` folder and map files (`room0.txt`, etc.) are located in the project root
+4. Run the main entry file: `Main.java`
+
+### Controls
+
+- Arrow Keys: Move the character (combat and item pickup are automatic on collision)
+- 'B' Key: Drop a bomb (if collected)
+
+---
+
+## Game Visual
+
+![Game Screenshot](https://github.com/user-attachments/assets/2a0ccd7e-69c2-4e30-806a-66496b07549b)
